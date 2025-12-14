@@ -4,7 +4,9 @@ import User from "@/models/user";
 import Order from "@/models/Order";
 
 // Create a client to send and receive events
-export const inngest = new Inngest({ id: "quickcart-next" });
+export const inngest = new Inngest({ id: "quickcart-next" ,
+  fetch: fetch.bind(globalThis),
+});
 
 
 // Inngest function to save user data to a database
@@ -16,12 +18,16 @@ export const syncUserCreation = inngest.createFunction(
     event: 'clerk.user.created'
   },
   async ({event}) =>{
-    const {id, first_name, last_name, email_addresses, image_url} = event.data;
+    const {id, first_name, last_name, email_addresses, image_url} = event?.data || {};
+
+    if (!id) {
+      throw new Error('Missing user ID in event data');
+    }
 
     const userData = {
       _id: id,
       name: first_name + ' ' + last_name,
-      email: email_addresses[0].email_address,
+      email: email_addresses[0]?.email_address,
       imageUrl: image_url
     }
     await connectDB()
@@ -39,12 +45,12 @@ export const syncUserUpdate = inngest.createFunction(
   },
 
     async ({event}) =>{
-    const {id, first_name, last_name, email_addresses, image_url} = event.data;
+    const {id, first_name, last_name, email_addresses, image_url} = event?.data || {};
 
     const userData = {
       _id: id,
       name: first_name + ' ' + last_name,
-      email: email_addresses[0].email_address,
+      email: email_addresses[0]?.email_address,
       imageUrl: image_url
     }
     await connectDB()
