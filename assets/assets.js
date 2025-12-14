@@ -224,7 +224,7 @@ export const productsDummyData = [
     "name": "MacBook Pro 16",
     "description": "The MacBook Pro 16, powered by Apple's M2 Pro chip, offers outstanding performance with 16GB RAM and a 512GB SSD. Whether you're editing high-resolution video, developing software, or multitasking with ease, this laptop can handle the toughest tasks. It features a stunning Retina display with True Tone technology, making it a top choice for professionals in creative industries or anyone who demands premium performance in a portable form.",
     "price": 2799.99,
-    "offerPrice": 2499.99,
+    "offerPrice": 2499.99, 
     "image": [
       "https://raw.githubusercontent.com/avinashdm/gs-images/main/quickcart/rzri7kytphxalrm9rubd.webp"
     ],
