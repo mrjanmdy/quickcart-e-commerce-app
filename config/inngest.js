@@ -50,9 +50,11 @@ export const syncUserCreation = inngest.createFunction(
     event: 'clerk.user.created'
   },
   async ({ event }) => {
+    console.log("EVENT DATA:", event.data);
+
     const data = event.data || {};
 
-    const id = data.id;
+    const id = data.id || '';
     const first_name = data.first_name || '';
     const last_name = data.last_name || '';
     const email_addresses = data.email_addresses || [];
