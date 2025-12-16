@@ -14,10 +14,12 @@ export async function GET(request){
     const user = await User.findById(userId)
 
     if(!user){
+      console.log('User not found with Id:', userId)
       return NextResponse.json({success: false, message: 'User not found'}, {status: 404})
     }
 
-    return NextResponse.json({success:true, user}, {status: 200})
+    return NextResponse.json({success:true, user}, {status: 200},console.log('user found:', user))
+
   }
   catch(err){
     console.error('Error in GET /api/user/data', err);  // لاگ برای دیباگ (در terminal ببین)

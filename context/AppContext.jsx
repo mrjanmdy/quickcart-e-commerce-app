@@ -61,10 +61,14 @@ export const AppContextProvider = (props) => {
             return;
         }
 
+        
         const {data} = await axios.get('/api/user/data',{headers : {Authorization: `Bearer ${token}`}})
-
+        
         // const {data} = await axios.get('/api/user/data',{headers : {Authorization: `Bearer ${token}`}})
-
+        if(!data){
+            console.log(error)
+        }
+        
         if(data.success){
             setUserData(data.user)
             setCartItems(data.user.cartItems)
@@ -162,7 +166,7 @@ export const AppContextProvider = (props) => {
     }, [user,isLoaded])
 
     const value = {
-        user,getToken,
+        user, getToken,
         currency, router,
         isSeller, setIsSeller,
         userData, fetchUserData,

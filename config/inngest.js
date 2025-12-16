@@ -18,11 +18,12 @@ export const syncUserCreation = inngest.createFunction(
     event: 'clerk.user.created'
   },
   async ({event}) =>{
-    const {id, first_name, last_name, email_addresses, image_url} = event?.data || {};
+    const {id, first_name, last_name, email_addresses, image_url} = event?.data ;
 
-    if (!id) {
-      throw new Error('Missing user ID in event data');
-    }
+    // if (!id) {
+    //   console.log('missing user id in event data')
+    //   throw new Error('Missing user ID in event data');
+    // }
 
     const userData = {
       _id: id,
@@ -32,6 +33,11 @@ export const syncUserCreation = inngest.createFunction(
     }
     await connectDB()
     await User.create(userData)
+
+    //     if (!userData) {
+    //   console.log('missing userData')
+    //   throw new Error('Missing userData  in event data');
+    // }
   }
 )
 
@@ -47,6 +53,10 @@ export const syncUserUpdate = inngest.createFunction(
     async ({event}) =>{
     const {id, first_name, last_name, email_addresses, image_url} = event?.data || {};
 
+    // if(!id){
+    //   console.log('missing user id in event data')
+    // }
+
     const userData = {
       _id: id,
       name: first_name + ' ' + last_name,
@@ -55,6 +65,10 @@ export const syncUserUpdate = inngest.createFunction(
     }
     await connectDB()
     await User.findByIdAndUpdate(id,userData)
+
+    // if(!userData){
+    //   console.log('missing userData')
+    // }
   }
 )
 
@@ -68,7 +82,7 @@ export const syncUserDeletion = inngest.createFunction(
   },
 
     async ({event}) =>{
-      const {id} = event.data
+      const {id} = event?.data
       await connectDB()
       await User.findByIdAndDelete(id)
   }
