@@ -9,6 +9,7 @@ export const inngest = new Inngest({ id: "quickcart-next" ,
 });
 
 
+/*
 // Inngest function to save user data to a database
 export const syncUserCreation = inngest.createFunction(
   {
@@ -40,7 +41,38 @@ export const syncUserCreation = inngest.createFunction(
     // }
   }
 )
+*/
+export const syncUserCreation = inngest.createFunction(
+  {
+    id: 'sync-user-from-clerk'
+  },
+  {
+    event: 'clerk.user.created'
+  },
+  async ({ event }) => {
+    const data = event.data || {};
 
+    const id = data.id;
+    const first_name = data.first_name || '';
+    const last_name = data.last_name || '';
+    const email_addresses = data.email_addresses || [];
+    const image_url = data.image_url || '';
+
+    if (!id) {
+      throw new Error('Missing user ID in Clerk event');
+    }
+
+    const userData = {
+      _id: id,
+      name: `${first_name} ${last_name}`.trim() || 'Unknown User',
+      email: email_addresses[0]?.email_address || null,
+      imageUrl: image_url
+    };
+
+    await connectDB();
+    await User.create(userData);
+  }
+);
 // Inngest function to update user data in database 
 export const syncUserUpdate = inngest.createFunction(
   {
